@@ -1,5 +1,6 @@
 ### Text Adventure Game
 ### Room descriptions coming soon
+### Work in progress
 
 import random as rand
 
