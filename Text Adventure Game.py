@@ -1,12 +1,20 @@
-### Work in progress
 ### Text Adventure Game
 ### Room descriptions coming soon
-
+### Close window if user does not want to play again
 ### Find a better way to check current state
+### make a map
+
+############################ Feedback ##############################
+### events in room could change make rng_room function
+### add items from chests
+    ### possible items tab
+### adding magic/abilities
+### add traps
+### Sunday, September 24th
 
 import random as r
 
-###### CLASSES ######
+############################ CLASSES ###############################
 
 ### Stats for both player, enemy, and bosses
 class stats:
@@ -37,6 +45,12 @@ def welcome_message():
     print("Welcome to the 'A Text Adventure Game' game")
     print("~"*65)
     print()
+    print("You are Quang Le.")
+    print("The evil lord Zheng Yang Pan has stolen the love of your life, Mercy Kim.")
+    print("Using your forbidden knowledge.")
+    print("You have inflitrated his fortress.")
+    print("You will show him no Mercy and reclaim your love.")
+    print()
     return
 
 ### Leaving message
@@ -56,6 +70,7 @@ def fin():
     print("I hope you had fun playing this basic game :)")
     print("~"*65)
     print()
+    exit()
     return
 
 ### when you lose possible flag
@@ -65,11 +80,20 @@ def game_over():
     print()
     answer = input("Would you like to try again? ")
     if(answer == "yes"):
+        player_n,room_number = reset()
         welcome_message()
-        return
+        return player_n,room_number
     else:
         leaving_message()
+        exit()
         return
+
+def reset():
+    player_reset = stats(50,7,3)
+    room_number = 1
+    return player_reset,room_number 
+    
+    
 
 ### rng looting
 def rng_loot(HP,ATK,DEF):
@@ -197,6 +221,12 @@ def dead_end():
 
 def room_traversal(player_rt):
     room_number = 1
+    get_treasure_2 = False
+    get_treasure_5 = False
+    get_treasure_9 = False
+    get_treasure_10 = False
+    get_treasure_11 = False
+    get_treasure_12 = False
     while(room_number < 14):
         print()
         answer = input("Will you go left, right, ahead, or behind? ")
@@ -206,8 +236,12 @@ def room_traversal(player_rt):
             dead_end()
         elif(answer == "right" and room_number == 1):
             room_number = 2
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            if(get_treasure_2 == False):
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+                get_treasure_2 = True
+            else:
+                print("You the best, my african american brother")
         elif(answer == "ahead" and room_number == 1):
             room_number = 3
             player_rt = enemy_room(player_rt)
@@ -224,8 +258,12 @@ def room_traversal(player_rt):
              dead_end()
         elif(answer == "right" and room_number == 3):
             room_number = 2
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            if(get_treasure_2 == False):
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+                get_treasure_2 = True
+            else:
+                print("You the best, my african american brother")
         elif(answer == "behind" and room_number == 3):
             room_number = 1
         elif(answer == "ahead" and room_number == 3):
@@ -239,8 +277,12 @@ def room_traversal(player_rt):
             player_rt = enemy_room(player_rt)
         elif(answer == "ahead" and room_number == 4):
             room_number = 5
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            if(get_treasure_5 == False):
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+                get_treasure_5 = True
+            else:
+                print("You the best, my african american brother")
         elif(answer == "right" and room_number == 4):
             room_number = 7
             player_rt = enemy_room(player_rt)
@@ -255,10 +297,14 @@ def room_traversal(player_rt):
             dead_end()
         elif(answer == "right" and room_number == 6):
             room_number = 9
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
-        elif(answer == "behind" and room_number == 7):
-            room_number = 6
+            if(get_treasure_9 == False):
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+                get_treasure_9 = True
+            else:
+                print("You the best, my african american brother")
+        elif(answer == "behind" and room_number == 6):
+            room_number = 7
             player_rt = enemy_room(player_rt)
         ############################### ROOM 7 ################################
         elif(answer == "behind" and room_number == 7):
@@ -280,8 +326,12 @@ def room_traversal(player_rt):
             player_rt = enemy_room(player_rt)
         elif(answer == "behind" and room_number == 8):
             room_number = 12
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            if(get_treasure_12 == False):
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+                get_treasure_12 = True
+            else:
+                print("You the best, my african american brother")
         ############################### ROOM 9 ################################
         elif((answer == "ahead" or answer == "behind") and room_number == 9):
             dead_end()
@@ -296,25 +346,38 @@ def room_traversal(player_rt):
             dead_end()
         elif(answer == "left" and room_number == 10):
             room_number = 9
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            if(get_treasure_9 == False):
+                get_treasure_9 = True
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+            else:
+                print("You the best, my african american brother")
         elif(answer == "behind" and room_number == 10):
-            room_number == 11
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+            room_number = 11
+            if(get_treasure_11 == False):
+                get_treasure_11 = True
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+            else:
+                print("You the best, my african american brother")
         ############################### ROOM 11 ################################
-        elif((answer == "ahead" or answer == "left" or answer == "right") and room_number == 11):
+        elif((answer == "behind" or answer == "left" or answer == "right") and room_number == 11):
             dead_end()
-        elif(answer == "behind" and room_number == 11):
-            new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
-            player_rt = stats(new[0],new[1],new[2])
+        elif(answer == "ahead" and room_number == 11):
+            room_number = 10
+            if(get_treasure_10 == False):
+                get_treasure_10 = True
+                new = rng_loot(player_rt.HP,player_rt.atk,player_rt.defense)
+                player_rt = stats(new[0],new[1],new[2])
+            else:
+                print("You the best, my african american brother")
         ############################### ROOM 12 ################################
         elif((answer == "left" or answer == "right") and room_number == 12):
             dead_end()
-        elif(answer == "behind" and room_number == 12):
+        elif(answer == "ahead" and room_number == 12):
             room_number = 8
             player_rt = enemy_room(player_rt)
-        elif(answer == "ahead" and room_number == 12):
+        elif(answer == "behind" and room_number == 12):
             room_number = 13
             player_rt = enemy_room(player_rt)
             player_rt = final_boss(player_rt)
