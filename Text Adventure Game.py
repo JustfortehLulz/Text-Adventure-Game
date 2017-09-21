@@ -1,10 +1,7 @@
 ### Text Adventure Game
 ### Room descriptions coming soon
 
-############################ Feedback ##############################
-### add xp
-### abilities
-### Sunday, September 24th
+############################ Feedback #############################
 
 import random as r
 
@@ -13,7 +10,7 @@ import random as r
 ### Stats for both player, enemy, and bosses
 class stats:
 
-	def __init__(self,HP,MAXHP,MP,MAXMP,atk,intelligence,defense,res,spd):
+	def __init__(self,HP,MAXHP,MP,MAXMP,atk,intelligence,defense,res,spd,xp,lvl):
 		self.HP = HP
 		self.MAXHP = MAXHP
 		self.MP = MP
@@ -23,6 +20,8 @@ class stats:
 		self.defense = defense
 		self.res = res
 		self.spd = spd
+		self.xp. = xp
+		self.lvl = lvl
 
 	def HP(self):
 		return self.HP
@@ -50,8 +49,14 @@ class stats:
 	def spd(self):
 		return self.spd
 
+	def xp(self):
+		return self.xp
+
+	def lvl(self):
+		return self.lvl
+
 	def __str__(self):
-		return "HP/MAXHP: %d/%d MP/MAXMP : %d/%d \nATK : %d \nINT : %d \nDEF : %d \nRES : %d \nSPD : %d" % (self.HP, self.MAXHP, self.MP,self.MAXMP, self.atk, self.intelligence, self.defense, self.res, self.spd)
+		return "LVL : % d \nHP/MAXHP: %d/%d MP/MAXMP : %d/%d \nATK : %d \nINT : %d \nDEF : %d \nRES : %d \nSPD : %d \nXP : %d" % (self.lvl,self.HP, self.MAXHP, self.MP,self.MAXMP, self.atk, self.intelligence, self.defense, self.res, self.spd, self.xp)
 
 ##########################LKfjdkljglkfdjkldsjfklsjfksjdkfdjsfklj
 class magic:
@@ -165,7 +170,7 @@ def fin():
 	print("Looks like you are such a hardcore gamer")
 	print("I wish I had those kinds of moves...")
 	print("I hope you had fun playing this basic game :)")
-	print("Who knows whats next in store for Quang Le and company")
+	print("Who knows whats next in store for Quang Le and company...")
 	print("~"*65)
 	print()
 	exit()
@@ -187,7 +192,7 @@ def game_over():
 		return
 
 def reset():
-	player_reset = stats(50,50,30,30,7,6,3,2,5)
+	player_reset = stats(50,50,30,30,7,6,3,2,5,0,1)
 	room_number = 1
 	return player_reset,room_number 
 	
@@ -313,6 +318,8 @@ def battle_system(playerb,enemyb,playerb_miven):
 				if(enemyb.HP <= 0):
 					print()
 					print("You have won the battle!")
+					playerb = enemy_xp(playerb,enemyb)
+					#################################################################finishplz##################################################################
 					return playerb
 				else:
 					enemy_attack(enemyb,playerb)
@@ -331,6 +338,7 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(enemyb.HP <= 0):
 						print()
 						print("You have won the battle!")
+						playerb = enemy_xp(playerb,enemyb)
 						return playerb
 				else:
 					print()
@@ -354,6 +362,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 
@@ -367,6 +379,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 
@@ -380,6 +396,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 
@@ -394,6 +414,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You used... DUNKEY BLAST!!!")
 						print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("By some fluke, DUNKEY BLAST!!! did not do anything...")
 					enemy_attack(enemyb,playerb)
@@ -411,6 +435,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 				elif(answer2 == "ice blast"):
@@ -418,6 +446,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 				elif(answer2 == "lighting blast"):
@@ -425,6 +457,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					if(playerb.intelligence > enemyb.res):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("You dealt no damage!\n")
 				elif(answer2 == "dunkey blast"):
@@ -433,6 +469,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 						enemyb.HP -= playerb.intelligence - enemyb.res
 						print("You used... DUNKEY BLAST!!!")
 						print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+						if(enemyb.HP <= 0):
+							print()
+							print("You have won the battle!")
+							playerb = enemy_xp(playerb,enemyb)
 					else:
 						print("By some fluke, DUNKEY BLAST!!! did not do anything...")
 						
@@ -455,7 +495,7 @@ def battle_system(playerb,enemyb,playerb_miven):
 def spawn_enemy():
 	HP = r.randint(1,50)
 	MP = r.randint(5,15)
-	enemys = stats(HP,HP,MP,MP,r.randint(5,10),r.randint(3,10),r.randint(2,6),r.randint(2,5),r.randint(5,10))
+	enemys = stats(HP,HP,MP,MP,r.randint(5,10),r.randint(3,10),r.randint(2,6),r.randint(2,5),r.randint(5,10),0,1)
 	return enemys
 
 def enemy_room(playere,playere_miven):
@@ -463,8 +503,28 @@ def enemy_room(playere,playere_miven):
 	player_b = battle_system(playere,E1,playere_miven)
 	return player_b
 
+def enemy_xp(player_x,enemy_x):
+	gain = enemy_x.MAXHP + enemy_x.MAXMP + enemy_x.atk + enemy_x.intelligence + enemy_x.defense + enemy_x.res + enemy_x.spd
+	if(gain <= 106 and gain >= 70):
+		player_x.xp += 20
+	elif(gain < 70 and gain >= 40):
+		player_x.xp += 15
+	elif(gain < 40):
+		player_x.xp += 10
+	if(player_x.xp >= 100):
+		leftover = 100 - player_x.xp
+		player_x.xp = leftover
+		player_x.MAXHP += 5 
+		player_x.MAXMP += 10
+		player_x.atk += 2
+		player_x.intelligence += 3
+		player_x.defense += 2
+		player_x.res += 1
+		player_x.lvl += 1
+	return player_x
+
 def spawn_final_boss():
-	enemys = stats(150,150,50,50,25,15,20,8,15)
+	enemys = stats(150,150,50,50,25,15,20,8,15,0,1)
 	return enemys
 
 def final_boss(player_fb,player_miven):
@@ -473,7 +533,7 @@ def final_boss(player_fb,player_miven):
 	return player_fb
 
 def spawn_first_boss():
-	enemy = stats(75,75,20,20,12,2,7,10,9)
+	enemy = stats(75,75,20,20,12,2,7,10,9,0,1)
 	return enemy
 
 def first_boss(player_fb,player_miven):
@@ -577,14 +637,14 @@ def room_traversal(player_rt,player_miven):
 			if(trap_1L == False):
 				trap_1L = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd) 
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl) 
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "right" and room_number == 1):
 			room_number = 2
 			if(get_treasure_2 == False):
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 				get_treasure_2 = True
 			else:
 				print("Turn around, my african american brother")
@@ -602,7 +662,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_2 == False):
 				recov_loot_2 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -620,7 +680,7 @@ def room_traversal(player_rt,player_miven):
 			room_number = 2
 			if(get_treasure_2 == False):
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 				get_treasure_2 = True
 			else:
 				print("Turn around, my african american brother")
@@ -642,7 +702,7 @@ def room_traversal(player_rt,player_miven):
 			room_number = 5
 			if(get_treasure_5 == False):
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 				get_treasure_5 = True
 			else:
 				print("Turn around, my african american brother")
@@ -659,7 +719,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_5 == False):
 				recov_loot_5 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -668,7 +728,7 @@ def room_traversal(player_rt,player_miven):
 			if(trap_5R == False):
 				trap_5R = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "behind" and room_number == 5):
@@ -683,7 +743,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_6 == False):
 				recov_loot_6 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -691,7 +751,7 @@ def room_traversal(player_rt,player_miven):
 			room_number = 9
 			if(get_treasure_9 == False):
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 				get_treasure_9 = True
 			else:
 				print("Turn around, my african american brother")
@@ -722,7 +782,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_8 == False):
 				recov_loot_8 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -733,7 +793,7 @@ def room_traversal(player_rt,player_miven):
 			room_number = 12
 			if(get_treasure_12 == False):
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 				get_treasure_12 = True
 			else:
 				print("Turn around, my african american brother")
@@ -747,7 +807,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_9 == False):
 				recov_loot_9 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -770,7 +830,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_10 == False):
 				recov_loot_10 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -779,7 +839,7 @@ def room_traversal(player_rt,player_miven):
 			if(get_treasure_9 == False):
 				get_treasure_9 = True
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 			else:
 				print("Turn around, my african american brother")
 				print("There's nothing for you here...")
@@ -788,7 +848,7 @@ def room_traversal(player_rt,player_miven):
 			if(get_treasure_11 == False):
 				get_treasure_11 = True
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 			else:
 				print("Turn around, my african american brother")
 				print("There's nothing for you here...")
@@ -801,7 +861,7 @@ def room_traversal(player_rt,player_miven):
 			if(trap_11L == False):
 				trap_11L = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "ahead" and room_number == 11):
@@ -809,7 +869,7 @@ def room_traversal(player_rt,player_miven):
 			if(get_treasure_10 == False):
 				get_treasure_10 = True
 				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
-				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8],player_rt.xp,player_rt.lvl)
 			else:
 				print("Turn around, my african american brother")
 				print("There's nothing for you here...")
@@ -822,7 +882,7 @@ def room_traversal(player_rt,player_miven):
 			if(recov_loot_12 == False):
 				recov_loot_12 = True
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
-				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
 				print("What the hell are you doing here go away")
 				print("You already took the treasure")
@@ -850,7 +910,7 @@ def room_traversal(player_rt,player_miven):
 
 welcome_message()
 
-player = stats(50,50,30,30,7,6,3,2,5)
+player = stats(50,50,30,30,7,6,3,2,5,0,1)
 print()
 print(player)
 player_iven = inventory()
