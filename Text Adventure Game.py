@@ -1,14 +1,10 @@
 ### Text Adventure Game
 ### Room descriptions coming soon
-### make a map
 
 ############################ Feedback ##############################
 ### add xp
-### possible items tab
 ### abilities
 ### Sunday, September 24th
-### finish battle system
-### Add Chairman Mao
 
 import random as r
 
@@ -160,10 +156,16 @@ def leaving_message():
 ### Ending
 def fin():
 	print()
+	print("Using your knowledge of the trenches")
+	print("You were able to defeat Zheng Yang Pan in a fearsome battle")
+	print("Not only that but you were reunited with the love of your life Mercy Kim")
+	print("They would leave Zheng Yang Pan's fortress to live happily ever after")
 	print("~"*65)
-	print("Wow bruv. You such a hardcore gamer")
+	print("Wow bro. I almost cried from that ending")
+	print("Looks like you are such a hardcore gamer")
 	print("I wish I had those kinds of moves...")
 	print("I hope you had fun playing this basic game :)")
+	print("Who knows whats next in store for Quang Le and company")
 	print("~"*65)
 	print()
 	exit()
@@ -185,7 +187,7 @@ def game_over():
 		return
 
 def reset():
-	player_reset = stats(50,7,3)
+	player_reset = stats(50,50,30,30,7,6,3,2,5)
 	room_number = 1
 	return player_reset,room_number 
 	
@@ -205,14 +207,14 @@ def rng_loot(HP,MAXHP,MP,MAXMP,ATK,INT,DEF,RES,SPD):
 	elif (rng < 95 and rng >= 90):  #Zheng Yang's Forbidden Shield
 		MAXHP += 15
 		ATK += 3
-		DEF += 20
-		RES += 10
+		DEF += 15
+		RES += 5
 		print("You have obtained Zheng Yang's Forbidden Shield!")
 		print("You now have " + str(MAXHP) + " HP!")
 		print("You now have " + str(ATK) + " ATK!")
 		print("You now have " + str(DEF) + " DEF!")
 		print("You now have " + str(RES) + " RES!")
-	elif (rng < 90 and rng >= 80):  #best food
+	elif (rng < 90 and rng >= 80):  #Ice Knack
 		INT += 5
 		SPD += 2
 		print("You have obtained Ice Knack!")
@@ -220,18 +222,18 @@ def rng_loot(HP,MAXHP,MP,MAXMP,ATK,INT,DEF,RES,SPD):
 		print("You now have " + str(SPD) + " SPD!")
 	elif (rng < 80 and rng >= 60): #worst food
 		ATK += 3
-		SPD += 1
+		MAXHP += 20
 		MAXMP += 20
-		print("You have obtained Gazoolgo!")
+		print("You have obtained Hugh Brahh's Breastplate!")
 		print("You now have " + str(ATK) + " ATK!")
-		print("You now have " + str(SPD) + " SPD!")
+		print("You now have " + str(MAXHP) + " MAX HP!")
 		print("You now have " + str(MAXMP) + " MAX MP!")
 	elif (rng <= 59 and rng >= 44): #Helm of Pizza Guy
 		MAXHP += 5
 		ATK += 2
 		DEF += 2
 		print("You have obtained Helm of Pizza Guy!")
-		print("You now have " + str(MAXHP) + " HP!")
+		print("You now have " + str(MAXHP) + " MAX HP!")
 		print("You now have " + str(ATK) + " attack!")
 		print("You now have " + str(DEF) + " defense!")
 	elif(rng <= 43 and rng >= 15): #Simon's Pan
@@ -243,7 +245,7 @@ def rng_loot(HP,MAXHP,MP,MAXMP,ATK,INT,DEF,RES,SPD):
 		DEF += 5
 		RES += 2
 		print("You have obtained Hong Chen's Chainmail")
-		print("You now have " + str(MAXHP) + " HP!")
+		print("You now have " + str(MAXHP) + " MAX HP!")
 		print("You now have " + str(DEF) + " defense!")
 	return HP,MAXHP,MP,MAXMP,ATK,INT,DEF,RES,SPD
 
@@ -255,9 +257,11 @@ def recovery_loot(HP,MAXHP,MP,MAXMP):
 	rng = r.randint(0,100)
 	if(rng <= 100 and rng >= 75):
 		HP = MAXHP
-		print("Your HP has been fully restored")
+		print("You found Mary Jane's Potion of Contentment!")
+		print("Your HP has been fully restored!")
 	elif(rng < 75 and rng >= 50):
 		HP += r.randint(10,15)
+		print("You found a counterfeit version of Mary Jane's Potion of Contentment")
 		if(HP > MAXHP):
 			HP = MAXHP
 			print("Your HP has been fully restored")
@@ -265,9 +269,11 @@ def recovery_loot(HP,MAXHP,MP,MAXMP):
 			print("Your HP is now " + str(HP))
 	elif(rng < 50 and rng >= 25):
 		MP = MAXMP
+		print("You found The Blue Pill of Dionysus")
 		print("Your MP has been fully restored")
 	elif(rng < 25 and rng >= 0):
 		MP += r.randint(5,10)
+		print("You found a counterfeit version of The Blue Pill of Dionysus")
 		if(MP > MAXMP):
 			MP = MAXMP
 			print("Your MP has been fully restored")
@@ -275,6 +281,15 @@ def recovery_loot(HP,MAXHP,MP,MAXMP):
 			print("Your MP is now " + str(MP))
 	return HP,MAXHP,MP,MAXMP
 
+def enemy_attack(enemy_a,player_a):
+	print()
+	print("The monster attacks!")
+	if(enemy_a.atk - player_a.defense > 0):
+		print("You took " + str(enemy_a.atk - player_a.defense) + " damage!")
+		player_a.HP -= (enemy_a.atk - player_a.defense)
+	else:
+		print()
+		print("You took no damage!")
 
 ############################################### BATTLE SYSTEM redo to include other stats#######################################
 def battle_system(playerb,enemyb,playerb_miven):
@@ -284,6 +299,7 @@ def battle_system(playerb,enemyb,playerb_miven):
 		print()
 		print("Player Stats\n" + str(playerb))
 		print()
+		print("You can attack, use magic, view the enemy stats, or run")
 		answer = input("What will you do? ")
 		if(answer == "attack"):
 			if(playerb.spd > enemyb.spd): 
@@ -299,29 +315,15 @@ def battle_system(playerb,enemyb,playerb_miven):
 					print("You have won the battle!")
 					return playerb
 				else:
-					print()
-					print("The monster attacks!")
-					if(enemyb.atk - playerb.defense > 0):
-						print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-						playerb.HP -= (enemyb.atk - playerb.defense)
-						if(playerb.HP <= 0):
-							game_over()
-							break
-					else:
-						print()
-						print("You took no damage!")
-			else:
-				print()
-				print("The monster attacks!")
-				if(enemyb.atk - playerb.defense > 0):
-					print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-					playerb.HP -= (enemyb.atk - playerb.defense)
+					enemy_attack(enemyb,playerb)
 					if(playerb.HP <= 0):
 						game_over()
 						break
-				else:
-					print()
-					print("You took no damage!")
+			else:
+				enemy_attack(enemyb,playerb)
+				if(playerb.HP <= 0):
+					game_over()
+					break
 				if(playerb.atk - enemyb.defense > 0):
 					print()
 					print("You dealt " + str(playerb.atk - enemyb.defense) + " damage!")
@@ -337,16 +339,11 @@ def battle_system(playerb,enemyb,playerb_miven):
 			print()
 			print("Enemy Stats\n" + str(enemyb))
 			print()
-			print("The monster attacks!")
-			if(enemyb.atk - playerb.defense > 0):
-				print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-				playerb.HP -= (enemyb.atk - playerb.defense)
-				if(playerb.HP <= 0):
-					game_over()
-					break
-			else:
-				print()
-				print("You took no damage!")
+			enemy_attack(enemyb,playerb)
+			if(playerb.HP <= 0):
+				game_over()
+				break
+
 		elif(answer == "magic"):
 			print()
 			print(playerb_miven)
@@ -360,16 +357,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					else:
 						print("You dealt no damage!\n")
 
-					print("The monster attacks!")
-					if(enemyb.atk - playerb.defense > 0):
-						print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-						playerb.HP -= (enemyb.atk - playerb.defense)
-						if(playerb.HP <= 0):
-							game_over()
-							break
-					else:
-						print()
-						print("You took no damage!")
+					enemy_attack(enemyb,playerb)
+					if(playerb.HP <= 0):
+						game_over()
+						break
 					
 				elif(answer2 == "ice blast"):
 					playerb.MP -= 5
@@ -379,16 +370,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					else:
 						print("You dealt no damage!\n")
 
-					print("The monster attacks!")
-					if(enemyb.atk - playerb.defense > 0):
-						print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-						playerb.HP -= (enemyb.atk - playerb.defense)
-						if(playerb.HP <= 0):
-							game_over()
-							break
-					else:
-						print()
-						print("You took no damage!")
+					enemy_attack(enemyb,playerb)
+					if(playerb.HP <= 0):
+						game_over()
+						break
 					
 				elif(answer2 == "lighting blast"):
 					playerb.MP -= 5
@@ -398,16 +383,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					else:
 						print("You dealt no damage!\n")
 
-					print("The monster attacks!")
-					if(enemyb.atk - playerb.defense > 0):
-						print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-						playerb.HP -= (enemyb.atk - playerb.defense)
-						if(playerb.HP <= 0):
-							game_over()
-							break
-					else:
-						print()
-						print("You took no damage!")
+					enemy_attack(enemyb,playerb)
+					if(playerb.HP <= 0):
+						game_over()
+						break
 			
 				elif(answer2 == "dunkey blast"):
 					playerb.MP -= 5
@@ -417,29 +396,15 @@ def battle_system(playerb,enemyb,playerb_miven):
 						print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
 					else:
 						print("By some fluke, DUNKEY BLAST!!! did not do anything...")
-
-					print("The monster attacks!")
-					if(enemyb.atk - playerb.defense > 0):
-						print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-						playerb.HP -= (enemyb.atk - playerb.defense)
-						if(playerb.HP <= 0):
-							game_over()
-							break
-					else:
-						print()
-						print("You took no damage!")
-						
-			else:
-				print("The monster attacks!")
-				if(enemyb.atk - playerb.defense > 0):
-					print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-					playerb.HP -= (enemyb.atk - playerb.defense)
+					enemy_attack(enemyb,playerb)
 					if(playerb.HP <= 0):
 						game_over()
 						break
-				else:
-					print()
-					print("You took no damage!")
+			else:
+				enemy_attack(enemyb,playerb)
+				if(playerb.HP <= 0):
+					game_over()
+					break
 
 				if(answer2 == "fire blast"):
 					playerb.MP -= 5
@@ -480,16 +445,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 			else:
 				print()
 				print("The monster blocks your path!")
-				print("The monster attacks!")
-				if(enemyb.atk - playerb.defense > 0):
-					print("You took " + str(enemyb.atk - playerb.defense) + " damage!")
-					playerb.HP -= (enemyb.atk - playerb.defense)
-					if(playerb.HP <= 0):
-						game_over()
-						break
-				else:
-					print()
-					print("You took no damage!")
+				enemy_attack(enemyb,playerb)
+				if(playerb.HP <= 0):
+					game_over()
+					break
 		else:
 			print("That is not a valid option...")
 			
@@ -499,19 +458,30 @@ def spawn_enemy():
 	enemys = stats(HP,HP,MP,MP,r.randint(5,10),r.randint(3,10),r.randint(2,6),r.randint(2,5),r.randint(5,10))
 	return enemys
 
-def spawn_boss():
-	enemys = stats(150,150,50,50,25,15,20,8,15)
-	return enemys
-
 def enemy_room(playere,playere_miven):
 	E1 = spawn_enemy()
 	player_b = battle_system(playere,E1,playere_miven)
 	return player_b
 
+def spawn_final_boss():
+	enemys = stats(150,150,50,50,25,15,20,8,15)
+	return enemys
+
 def final_boss(player_fb,player_miven):
-	FB = spawn_boss()
+	FB = spawn_final_boss()
 	player_fb = battle_system(player_fb,FB,player_miven)
 	return player_fb
+
+def spawn_first_boss():
+	enemy = stats(75,75,20,20,12,2,7,10,9)
+	return enemy
+
+def first_boss(player_fb,player_miven):
+	first = spawn_first_boss()
+	print()
+	print("Chairman Robin Wang blocks your way!")
+	playerfb = battle_system(playerfb,first,player_miven)
+	return playerfb
 
 def dead_end():
 	print()
@@ -577,59 +547,91 @@ def room_traversal(player_rt,player_miven):
 	get_treasure_11 = False
 	get_treasure_12 = False
 	
+	recov_loot_2 = False
+	recov_loot_5 = False
+	recov_loot_6 = False
+	recov_loot_8 = False
+	recov_loot_9 = False
+	recov_loot_10 = False
+	recov_loot_12 = False
+
 	trap_1L = False
 	trap_5R = False
 	trap_11L = False
+
+	first_defeat = False
 	
 	while(room_number < 14):
 		print()
-		answer = input("Will you go left, right, ahead, or behind? ")
+		print("You can go left, right, ahead, behind, or view your character")
+		answer = input("What will you do? ")
 		print()
+		
+		if(answer == "view"):
+			print(player_rt)
+			print(player_miven)
 		############################### ROOM 1 ################################
-		if(answer == "behind" and room_number == 1):
+		elif(answer == "behind" and room_number == 1):
 			dead_end()
 		elif((answer == "left") and room_number == 1):
 			if(trap_1L == False):
 				trap_1L = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],MAXHP,MP,MAXMP,new[1],INT,new[2],RES,SPD) #####????????????????????//
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd) 
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "right" and room_number == 1):
 			room_number = 2
 			if(get_treasure_2 == False):
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 				get_treasure_2 = True
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
 		elif(answer == "ahead" and room_number == 1):
 			room_number = 3
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
+
 		############################### ROOM 2 ################################
-		elif((answer == "right" or answer == "behind") and room_number == 2):
+		elif(answer == "right" and room_number == 2):
 			dead_end()
+		elif(answer == "behind" and room_number == 2):
+			if(recov_loot_2 == False):
+				recov_loot_2 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "left" and room_number == 2):
 			room_number = 1
 		elif(answer == "ahead" and room_number == 2):
 			room_number = 3
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 3 ################################
 		elif(answer == "left" and room_number == 3):
 			 dead_end()
 		elif(answer == "right" and room_number == 3):
 			room_number = 2
 			if(get_treasure_2 == False):
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 				get_treasure_2 = True
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
 		elif(answer == "behind" and room_number == 3):
 			room_number = 1
 		elif(answer == "ahead" and room_number == 3):
 			room_number = 4
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 4 ################################
 		elif(answer == "left" and room_number == 4):
 			dead_end()
@@ -639,41 +641,66 @@ def room_traversal(player_rt,player_miven):
 		elif(answer == "ahead" and room_number == 4):
 			room_number = 5
 			if(get_treasure_5 == False):
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 				get_treasure_5 = True
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
 		elif(answer == "right" and room_number == 4):
 			room_number = 7
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 5 ################################
-		elif((answer == "right" or answer == "left") and room_number == 5):
+		elif(answer == "left" and room_number == 5):
 			dead_end()
+		elif(answer == "right" and room_number == 5):
+			if(recov_loot_5 == False):
+				recov_loot_5 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
+
 		elif(answer == "ahead" and room_number == 5):
 			if(trap_5R == False):
 				trap_5R = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],MAXHP,MP,MAXMP,new[1],INT,new[2],RES,SPD)
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd)
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "behind" and room_number == 5):
 			room_number = 4
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 6 ################################
-		elif((answer == "ahead" or answer == "left") and room_number == 6):
+		elif(answer == "ahead" and room_number == 6):
 			dead_end()
+		elif(answer == "left" and room_number == 6):
+			if(recov_loot_6 == False):
+				recov_loot_6 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "right" and room_number == 6):
 			room_number = 9
 			if(get_treasure_9 == False):
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 				get_treasure_9 = True
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
 		elif(answer == "behind" and room_number == 6):
 			room_number = 7
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 7 ################################
 		elif(answer == "behind" and room_number == 7):
 			dead_end()
@@ -686,48 +713,87 @@ def room_traversal(player_rt,player_miven):
 		elif(answer == "right" and room_number == 7):
 			room_number = 8
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 8 ################################
-		elif((answer == "ahead" or answer == "right") and room_number == 8):
+		elif(answer == "ahead" and room_number == 8):
 			dead_end()
+		elif(answer == "right" and room_number == 8):
+			if(recov_loot_8 == False):
+				recov_loot_8 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "left" and room_number == 8):
 			room_number = 7
 			player_rt = enemy_room(player_rt,player_miven)
 		elif(answer == "behind" and room_number == 8):
 			room_number = 12
 			if(get_treasure_12 == False):
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 				get_treasure_12 = True
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
+		
+
 		############################### ROOM 9 ################################
-		elif((answer == "ahead" or answer == "behind") and room_number == 9):
+		elif(answer == "ahead" and room_number == 9):
 			dead_end()
+		elif(answer == "behind" and room_number == 9):
+			if(recov_loot_9 == False):
+				recov_loot_9 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "left" and room_number == 9):
 			room_number = 6
-			player_rt = enemy_room(player_rt)
+			if(first_defeat == False):
+				player_rt = first_boss(player_rt,player_miven)
+				first_defeat = True
+			else:
+				player_rt = enemy_room(player_rt)
 		elif(answer == "right" and room_number == 9):
 			room_number = 10
 			player_rt = enemy_room(player_rt,player_miven)
+		
+
 		############################### ROOM 10 ################################
-		elif((answer == "ahead" or answer == "right") and room_number == 10):
+		elif(answer == "right" and room_number == 10):
 			dead_end()
+		elif(answer == "ahead" and room_number == 10):
+			if(recov_loot_10 == False):
+				recov_loot_10 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "left" and room_number == 10):
 			room_number = 9
 			if(get_treasure_9 == False):
 				get_treasure_9 = True
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
 		elif(answer == "behind" and room_number == 10):
 			room_number = 11
 			if(get_treasure_11 == False):
 				get_treasure_11 = True
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
+		
+
 		############################### ROOM 11 ################################
 		elif((answer == "behind" or answer == "right") and room_number == 11):
 			dead_end()
@@ -735,28 +801,43 @@ def room_traversal(player_rt,player_miven):
 			if(trap_11L == False):
 				trap_11L = True
 				new = trap(player_rt.HP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],MAXHP,MP,MAXMP,new[1],INT,new[2],RES,SPD)
+				player_rt = stats(new[0],player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,new[1],player_rt.intelligence,new[2],player_rt.res,player_rt.spd)
 			else:
 				print("I don't think you want to go back in there...")
 		elif(answer == "ahead" and room_number == 11):
 			room_number = 10
 			if(get_treasure_10 == False):
 				get_treasure_10 = True
-				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.atk,player_rt.defense)
-				player_rt = stats(new[0],new[1],new[2],new[3])
+				new = rng_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP,player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+				player_rt = stats(new[0],new[1],new[2],new[3],new[4],new[5],new[6],new[7],new[8])
 			else:
-				print("You the best, my african american brother")
+				print("Turn around, my african american brother")
+				print("There's nothing for you here...")
+		
+
 		############################### ROOM 12 ################################
-		elif((answer == "left" or answer == "right") and room_number == 12):
+		elif(answer == "left" and room_number == 12):
 			dead_end()
+		elif(answer == "right" and room_number == 12):
+			if(recov_loot_12 == False):
+				recov_loot_12 = True
+				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
+				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd)
+			else:
+				print("What the hell are you doing here go away")
+				print("You already took the treasure")
 		elif(answer == "ahead" and room_number == 12):
 			room_number = 8
 			player_rt = enemy_room(player_rt,player_miven)
 		elif(answer == "behind" and room_number == 12):
 			room_number = 13
 			player_rt = enemy_room(player_rt,player_miven)
+			print()
+			print("ZHENG YANG PAN appears before you!")
 			player_rt = final_boss(player_rt,player_miven)
 			fin()
+		
+
 		############################### ERROR ################################
 		else:
 			print("That is not a valid option...")
