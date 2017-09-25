@@ -1,9 +1,12 @@
 ### Text Adventure Game
 ### Room descriptions coming soon
 
-############################ Feedback #############################
+############################ Feedback ############################
 
+import os
 import random as r
+
+
 
 ############################ CLASSES ###############################
 
@@ -20,7 +23,7 @@ class stats:
 		self.defense = defense
 		self.res = res
 		self.spd = spd
-		self.xp. = xp
+		self.xp = xp
 		self.lvl = lvl
 
 	def HP(self):
@@ -132,6 +135,7 @@ class inventory:
 			out += '\n' + '\t'.join([str(x) for x in [item.name, item.HP, item.ATK, item.DEF]])
 		return out
 		
+###################################################################################################################################################
 
 ###### FUNCTIONS ######
 
@@ -176,6 +180,19 @@ def fin():
 	exit()
 	return
 
+def start_game():
+	welcome_message()
+	player = stats(50,50,30,30,7,6,3,2,5,0,1)
+	print()
+	print(player)
+	player_iven = inventory()
+	player_miven = magic_inventory()
+	player_miven = rng_magic(player_miven)
+	print()
+	print(player_miven)
+	room_traversal(player,player_miven)
+
+
 ### when you lose possible flag
 def game_over():
 	print()
@@ -183,18 +200,12 @@ def game_over():
 	print()
 	answer = input("Would you like to try again? ")
 	if(answer == "yes"):
-		player_n,room_number = reset()
-		welcome_message()
-		return player_n,room_number
+		start_game()
 	else:
 		leaving_message()
 		exit()
 		return
 
-def reset():
-	player_reset = stats(50,50,30,30,7,6,3,2,5,0,1)
-	room_number = 1
-	return player_reset,room_number 
 	
 ### rng looting items only
 def rng_loot(HP,MAXHP,MP,MAXMP,ATK,INT,DEF,RES,SPD):
@@ -325,12 +336,10 @@ def battle_system(playerb,enemyb,playerb_miven):
 					enemy_attack(enemyb,playerb)
 					if(playerb.HP <= 0):
 						game_over()
-						break
 			else:
 				enemy_attack(enemyb,playerb)
 				if(playerb.HP <= 0):
 					game_over()
-					break
 				if(playerb.atk - enemyb.defense > 0):
 					print()
 					print("You dealt " + str(playerb.atk - enemyb.defense) + " damage!")
@@ -350,131 +359,136 @@ def battle_system(playerb,enemyb,playerb_miven):
 			enemy_attack(enemyb,playerb)
 			if(playerb.HP <= 0):
 				game_over()
-				break
 
 		elif(answer == "magic"):
-			print()
-			print(playerb_miven)
-			answer2 = input("Which spell will you use? ")
-			if(playerb.spd > enemyb.spd):
-				if(answer2 == "fire blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-
-					enemy_attack(enemyb,playerb)
-					if(playerb.HP <= 0):
-						game_over()
-						break
-					
-				elif(answer2 == "ice blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-
-					enemy_attack(enemyb,playerb)
-					if(playerb.HP <= 0):
-						game_over()
-						break
-					
-				elif(answer2 == "lighting blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-
-					enemy_attack(enemyb,playerb)
-					if(playerb.HP <= 0):
-						game_over()
-						break
-			
-				elif(answer2 == "dunkey blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You used... DUNKEY BLAST!!!")
-						print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("By some fluke, DUNKEY BLAST!!! did not do anything...")
-					enemy_attack(enemyb,playerb)
-					if(playerb.HP <= 0):
-						game_over()
-						break
+			if(playerb.MP <= 0):
+				print("YOU HAVE NO MANA!!!")
 			else:
-				enemy_attack(enemyb,playerb)
-				if(playerb.HP <= 0):
-					game_over()
-					break
+				print()
+				print(playerb_miven)
+				answer2 = input("Which spell will you use? ")
+				if(playerb.spd > enemyb.spd):
+					if(answer2 == "fire blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
 
-				if(answer2 == "fire blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-				elif(answer2 == "ice blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-				elif(answer2 == "lighting blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("You dealt no damage!\n")
-				elif(answer2 == "dunkey blast"):
-					playerb.MP -= 5
-					if(playerb.intelligence > enemyb.res):
-						enemyb.HP -= playerb.intelligence - enemyb.res
-						print("You used... DUNKEY BLAST!!!")
-						print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
-						if(enemyb.HP <= 0):
-							print()
-							print("You have won the battle!")
-							playerb = enemy_xp(playerb,enemyb)
-					else:
-						print("By some fluke, DUNKEY BLAST!!! did not do anything...")
+						enemy_attack(enemyb,playerb)
+						if(playerb.HP <= 0):
+							game_over()
+						
+					elif(answer2 == "ice blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
+
+						enemy_attack(enemyb,playerb)
+						if(playerb.HP <= 0):
+							game_over()
+						
+					elif(answer2 == "lighting blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
+
+						enemy_attack(enemyb,playerb)
+						if(playerb.HP <= 0):
+							game_over()
+				
+					elif(answer2 == "dunkey blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You used... DUNKEY BLAST!!!")
+							print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("By some fluke, DUNKEY BLAST!!! did not do anything...")
+						enemy_attack(enemyb,playerb)
+						if(playerb.HP <= 0):
+							game_over()
+				else:
+					enemy_attack(enemyb,playerb)
+					if(playerb.HP <= 0):
+						game_over()
+
+					if(answer2 == "fire blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
+					elif(answer2 == "ice blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
+					elif(answer2 == "lighting blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("You dealt no damage!\n")
+					elif(answer2 == "dunkey blast"):
+						playerb.MP -= 5
+						if(playerb.intelligence > enemyb.res):
+							enemyb.HP -= playerb.intelligence - enemyb.res
+							print("You used... DUNKEY BLAST!!!")
+							print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							if(enemyb.HP <= 0):
+								print()
+								print("You have won the battle!")
+								playerb = enemy_xp(playerb,enemyb)
+								return playerb
+						else:
+							print("By some fluke, DUNKEY BLAST!!! did not do anything...")
 						
 		elif(answer == "run"):
 			flee = r.randint(0,75)
@@ -488,14 +502,13 @@ def battle_system(playerb,enemyb,playerb_miven):
 				enemy_attack(enemyb,playerb)
 				if(playerb.HP <= 0):
 					game_over()
-					break
 		else:
 			print("That is not a valid option...")
 			
 def spawn_enemy():
-	HP = r.randint(1,50)
+	HP = r.randint(1,25)
 	MP = r.randint(5,15)
-	enemys = stats(HP,HP,MP,MP,r.randint(5,10),r.randint(3,10),r.randint(2,6),r.randint(2,5),r.randint(5,10),0,1)
+	enemys = stats(HP,HP,MP,MP,r.randint(5,7),r.randint(3,5),r.randint(2,4),r.randint(2,4),r.randint(5,6),0,1)
 	return enemys
 
 def enemy_room(playere,playere_miven):
@@ -615,6 +628,13 @@ def room_traversal(player_rt,player_miven):
 	recov_loot_10 = False
 	recov_loot_12 = False
 
+	enemy_r3 = False
+	enemy_r4 = False
+	enemy_r6 = False
+	enemy_r7 = False
+	enemy_r8 = False
+	enemy_r10 = False
+
 	trap_1L = False
 	trap_5R = False
 	trap_11L = False
@@ -651,8 +671,16 @@ def room_traversal(player_rt,player_miven):
 				print("There's nothing for you here...")
 		elif(answer == "ahead" and room_number == 1):
 			room_number = 3
-			player_rt = enemy_room(player_rt,player_miven)
-		
+			if(enemy_r3 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r3 = True
+				else:
+					enemy_r3 = False
+			else:
+				print("There's nothing here...")
 
 
 		############################### ROOM 2 ################################
@@ -670,7 +698,16 @@ def room_traversal(player_rt,player_miven):
 			room_number = 1
 		elif(answer == "ahead" and room_number == 2):
 			room_number = 3
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r3 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r3 = True
+				else:
+					enemy_r3 = False
+			else:
+				print("There's nothing here...")
 		
 
 		############################### ROOM 3 ################################
@@ -689,15 +726,35 @@ def room_traversal(player_rt,player_miven):
 			room_number = 1
 		elif(answer == "ahead" and room_number == 3):
 			room_number = 4
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r4 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r4 = True
+				else:
+					enemy_r4 = False
+			else:
+				print("There's nothing here...")
 		
 
 		############################### ROOM 4 ################################
 		elif(answer == "left" and room_number == 4):
 			dead_end()
 		elif(answer == "behind" and room_number == 4):
+
 			room_number = 3
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r3 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r3 = True
+				else:
+					enemy_r3 = False
+			else:
+				print("There's nothing here...")
+
 		elif(answer == "ahead" and room_number == 4):
 			room_number = 5
 			if(get_treasure_5 == False):
@@ -709,7 +766,16 @@ def room_traversal(player_rt,player_miven):
 				print("There's nothing for you here...")
 		elif(answer == "right" and room_number == 4):
 			room_number = 7
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r7 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r7 = True
+				else:
+					enemy_r7 = False
+			else:
+				print("There's nothing here...")
 		
 
 		############################### ROOM 5 ################################
@@ -733,7 +799,16 @@ def room_traversal(player_rt,player_miven):
 				print("I don't think you want to go back in there...")
 		elif(answer == "behind" and room_number == 5):
 			room_number = 4
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r4 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r4 = True
+				else:
+					enemy_r4 = False
+			else:
+				print("There's nothing here...")
 		
 
 		############################### ROOM 6 ################################
@@ -758,22 +833,60 @@ def room_traversal(player_rt,player_miven):
 				print("There's nothing for you here...")
 		elif(answer == "behind" and room_number == 6):
 			room_number = 7
-			player_rt = enemy_room(player_rt,player_miven)
-		
+			if(enemy_r7 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r7 = True
+				else:
+					enemy_r7 = False
+			else:
+				print("There's nothing here...")
+
 
 		############################### ROOM 7 ################################
 		elif(answer == "behind" and room_number == 7):
 			dead_end()
 		elif(answer == "left" and room_number == 7):
 			room_number = 4
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r4 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r4 = True
+				else:
+					enemy_r4 = False
+			else:
+				print("There's nothing here...")
+
 		elif(answer == "ahead" and room_number == 7):
 			room_number = 6
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r6 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r6 = True
+				else:
+					enemy_r6 = False
+			else:
+				print("There's nothing here...")
+
 		elif(answer == "right" and room_number == 7):
 			room_number = 8
-			player_rt = enemy_room(player_rt,player_miven)
-		
+			if(enemy_r8 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r8 = True
+				else:
+					enemy_r8 = False
+			else:
+				print("There's nothing here...")
+
 
 		############################### ROOM 8 ################################
 		elif(answer == "ahead" and room_number == 8):
@@ -788,7 +901,17 @@ def room_traversal(player_rt,player_miven):
 				print("You already took the treasure")
 		elif(answer == "left" and room_number == 8):
 			room_number = 7
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r7 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r7 = True
+				else:
+					enemy_r7 = False
+			else:
+				print("There's nothing here...")
+
 		elif(answer == "behind" and room_number == 8):
 			room_number = 12
 			if(get_treasure_12 == False):
@@ -817,10 +940,28 @@ def room_traversal(player_rt,player_miven):
 				player_rt = first_boss(player_rt,player_miven)
 				first_defeat = True
 			else:
-				player_rt = enemy_room(player_rt)
+				if(enemy_r6 == False):
+					temp = player_rt.xp
+					player_rt = enemy_room(player_rt,player_miven)
+					now = player_rt.xp
+					if(temp != now):
+						enemy_r6 = True
+					else:
+						enemy_r6 = False
+				else:
+					print("There's nothing here...")
 		elif(answer == "right" and room_number == 9):
 			room_number = 10
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r10 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r10 = True
+				else:
+					enemy_r10 = False
+			else:
+				print("There's nothing here...")
 		
 
 		############################### ROOM 10 ################################
@@ -888,7 +1029,17 @@ def room_traversal(player_rt,player_miven):
 				print("You already took the treasure")
 		elif(answer == "ahead" and room_number == 12):
 			room_number = 8
-			player_rt = enemy_room(player_rt,player_miven)
+			if(enemy_r8 == False):
+				temp = player_rt.xp
+				player_rt = enemy_room(player_rt,player_miven)
+				now = player_rt.xp
+				if(temp != now):
+					enemy_r8 = True
+				else:
+					enemy_r8 = False
+			else:
+				print("There's nothing here...")
+
 		elif(answer == "behind" and room_number == 12):
 			room_number = 13
 			player_rt = enemy_room(player_rt,player_miven)
@@ -909,6 +1060,9 @@ def room_traversal(player_rt,player_miven):
 ###############################################################################################################################
 
 welcome_message()
+
+os.system("start D:\Kpop\Ailee\Insane.mp3")
+
 
 player = stats(50,50,30,30,7,6,3,2,5,0,1)
 print()
