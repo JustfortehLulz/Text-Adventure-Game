@@ -692,7 +692,7 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("I don't think an empty chest is useful for adventures")
 				print("You already took the treasure")
 		elif(answer == "left" and room_number == 2):
 			room_number = 1
@@ -787,7 +787,8 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("I don't see anything...")
+				print("Must mean its empty")
 				print("You already took the treasure")
 
 		elif(answer == "ahead" and room_number == 5):
@@ -820,7 +821,7 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("This chest is looking pretty empty")
 				print("You already took the treasure")
 		elif(answer == "right" and room_number == 6):
 			room_number = 9
@@ -897,7 +898,7 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("It's time to stop looking because this chest is empty")
 				print("You already took the treasure")
 		elif(answer == "left" and room_number == 8):
 			room_number = 7
@@ -932,7 +933,7 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("Nope, this chest is still empty")
 				print("You already took the treasure")
 		elif(answer == "left" and room_number == 9):
 			room_number = 6
@@ -973,7 +974,8 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("OH LOOK THERE'S SOMETHING IN HERE!")
+				print("It's air...")
 				print("You already took the treasure")
 		elif(answer == "left" and room_number == 10):
 			room_number = 9
@@ -1025,7 +1027,7 @@ def room_traversal(player_rt,player_miven):
 				new = recovery_loot(player_rt.HP,player_rt.MAXHP,player_rt.MP,player_rt.MAXMP)
 				player_rt = stats(new[0],new[1],new[2],new[3],player_rt.atk,player_rt.intelligence,player_rt.defense,player_rt.res,player_rt.spd,player_rt.xp,player_rt.lvl)
 			else:
-				print("What the hell are you doing here go away")
+				print("Did you expect the treasure to respawn or something?")
 				print("You already took the treasure")
 		elif(answer == "ahead" and room_number == 12):
 			room_number = 8
