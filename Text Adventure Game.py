@@ -7,7 +7,6 @@ import os
 import random as r
 
 
-
 ############################ CLASSES ###############################
 
 ### Stats for both player, enemy, and bosses
