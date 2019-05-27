@@ -647,8 +647,15 @@ def room_traversal(player_rt,player_miven):
 		print()
 		
 		if(answer == "view"):
+			print("~"*65)
+			print("Quang Le's Stats")
+			print("~"*65)
 			print(player_rt)
+			print("~"*65)
+			print()
+			print("Magic Spells")
 			print(player_miven)
+			print("~"*65)
 		############################### ROOM 1 ################################
 		elif(answer == "behind" and room_number == 1):
 			dead_end()
@@ -1061,9 +1068,6 @@ def room_traversal(player_rt,player_miven):
 ###############################################################################################################################
 
 welcome_message()
-
-os.system("start D:\Kpop\Ailee\Insane.mp3")
-
 
 player = stats(50,50,30,30,7,6,3,2,5,0,1)
 print()
