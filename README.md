@@ -1,2 +1,9 @@
 # Text-Adventure-Game
-This might take a while
+
+# Files
+
+'Text Adventure Game.py'
+- The main file that runs the game (WIP)
+
+functions.py
+- Contains all the functions used (WIP)
