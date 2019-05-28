@@ -7,7 +7,7 @@ import os
 import random as r
 
 
-############################ CLASSES ###############################
+######################################################################## CLASSES ################################################################################################################
 
 ### Stats for both player, enemy, and bosses
 class stats:
@@ -60,7 +60,7 @@ class stats:
 	def __str__(self):
 		return "LVL : % d \nHP/MAXHP: %d/%d MP/MAXMP : %d/%d \nATK : %d \nINT : %d \nDEF : %d \nRES : %d \nSPD : %d \nXP : %d" % (self.lvl,self.HP, self.MAXHP, self.MP,self.MAXMP, self.atk, self.intelligence, self.defense, self.res, self.spd, self.xp)
 
-##########################LKfjdkljglkfdjkldsjfklsjfksjdkfdjsfklj
+########################## MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC MAGIC 
 class magic:
 
 	def __init__(self,Name,MPCost,DMG):
@@ -308,12 +308,12 @@ def enemy_attack(enemy_a,player_a):
 
 ############################################### BATTLE SYSTEM redo to include other stats#######################################
 def battle_system(playerb,enemyb,playerb_miven):
-	print()
+	print("~"*65)
 	print("A monster approaches!")
 	while(playerb.HP > 0 or enemyb.HP > 0):
-		print()
+		print("~"*65)
 		print("Player Stats\n" + str(playerb))
-		print()
+		print("~"*65)
 		print("You can attack, use magic, view the enemy stats, or run")
 		answer = input("What will you do? ")
 		if(answer == "attack"):
@@ -363,8 +363,9 @@ def battle_system(playerb,enemyb,playerb_miven):
 			if(playerb.MP <= 0):
 				print("YOU HAVE NO MANA!!!")
 			else:
-				print()
+				print("~"*65)
 				print(playerb_miven)
+				print("~"*65)
 				answer2 = input("Which spell will you use? ")
 				if(playerb.spd > enemyb.spd):
 					if(answer2 == "fire blast"):
@@ -423,7 +424,7 @@ def battle_system(playerb,enemyb,playerb_miven):
 						if(playerb.intelligence > enemyb.res):
 							enemyb.HP -= playerb.intelligence - enemyb.res
 							print("You used... DUNKEY BLAST!!!")
-							print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage!\n")
+							print("It should have dealt 100000000000000000 damage but instead it dealt " + str(playerb.intelligence - enemyb.res) + " damage...\n")
 							if(enemyb.HP <= 0):
 								print()
 								print("You have won the battle!")
@@ -561,6 +562,31 @@ def dead_end():
 	print()
 	return
 
+def flee(num):
+	if(num == 0):
+		print("~"*65)
+		print("Now hang on why are you running away. You just started your adventure..")
+		print("~"*65)
+	elif(num == 1):
+		print("~"*65)
+		print("Stop fleeing bro. What you doing man")
+		print("~"*65)
+	elif(num == 2):
+		print("~"*65)
+		print("Do it one more time. I dare you")
+		print("~"*65)
+	elif(num == 3):
+		print("~"*65)
+		print("I'm gonna close your game if you do it one more time")
+		print("~"*65)
+	elif(num == 4):
+		print("~"*65)
+		print("You gone and done it now")
+		print("~"*65)
+		exit()
+	num += 1
+	return num
+
 def trap(HP,ATK,DEF):
 	print()
 	print("You activated a trap!")
@@ -639,6 +665,8 @@ def room_traversal(player_rt,player_miven):
 	trap_11L = False
 
 	first_defeat = False
+
+	j = 0
 	
 	while(room_number < 14):
 		print()
@@ -658,7 +686,7 @@ def room_traversal(player_rt,player_miven):
 			print("~"*65)
 		############################### ROOM 1 ################################
 		elif(answer == "behind" and room_number == 1):
-			dead_end()
+			j = flee(j)
 		elif((answer == "left") and room_number == 1):
 			if(trap_1L == False):
 				trap_1L = True
