@@ -5,7 +5,8 @@
 
 import os
 import random as r
-
+#import room_traversal as RT
+import functions as F
 
 ######################################################################## CLASSES ################################################################################################################
 
@@ -136,21 +137,7 @@ class inventory:
 		
 ###################################################################################################################################################
 
-###### FUNCTIONS ######
 
-### Welcome message
-def welcome_message():
-	print()
-	print("~"*65)
-	print("Welcome to the 'A Text Adventure Game' game")
-	print("~"*65)
-	print()
-	print("You are Quang Le.")
-	print("The evil lord Zheng Yang Pan has stolen the love of your life, Mercy Kim.")
-	print("Using your forbidden knowledge.")
-	print("You have inflitrated his fortress.")
-	print("You will show him no Mercy and reclaim your love.")
-	return
 
 ### Leaving message
 def leaving_message():
@@ -180,7 +167,7 @@ def fin():
 	return
 
 def start_game():
-	welcome_message()
+	F.welcome_message()
 	player = stats(50,50,30,30,7,6,3,2,5,0,1)
 	print()
 	print(player)
@@ -634,6 +621,8 @@ def rng_magic(player_inven_M):
 			player_inven_M.add_magic(s4_name)
 	return player_inven_M
 			
+
+
 
 def room_traversal(player_rt,player_miven):
 	room_number = 1
@@ -1091,11 +1080,10 @@ def room_traversal(player_rt,player_miven):
 		print()
 		print("You are currently in room # " + str(room_number))
 	return
-
-			
+		
 ###############################################################################################################################
 
-welcome_message()
+F.welcome_message()
 
 player = stats(50,50,30,30,7,6,3,2,5,0,1)
 print()
